@@ -1,0 +1,80 @@
+run:
+  concurrency: 4
+  timeout: 1m
+  issue-exit-code: 1
+  tests: false
+
+output:
+  format: colored-line-number # use 'golangci-lint run --out-format junit-xml' to have Jenkins-compatible results
+  print-issued-lines: true
+  print-linter-name: true
+  uniq-by-line: true
+  sort-results: true
+
+linters:
+  enable-all: false
+  presets:
+    - bugs
+    - comment
+    - error
+    - format
+    - import
+    - performance
+    - style
+    - metalinter
+  disable:
+    - scopelint  # deprecated
+    - interfacer # deprecated
+    - golint     # deprecated, 'style' preset uses Revive
+    - maligned   # deprecated, replaced with govet fieldalignment
+    - varnamelen
+    - wsl
+    - gomnd
+    - ireturn
+    - nlreturn
+
+linters-settings:
+  govet:
+    check-shadowing: true
+    enable:
+      - asmdecl
+      - assign
+      - atomic
+      - atomicalign
+      - bools
+      - buildtag
+      - cgocall
+      - composites
+      - copylocks
+      - deepequalerrors
+      - errorsas
+      - fieldalignment
+      - findcall
+      - framepointer
+      - httpresponse
+      - ifaceassert
+      - loopclosure
+      - lostcancel
+      - nilfunc
+      - nilness
+      - printf
+      - reflectvaluecompare
+      - shadow
+      - shift
+      - sigchanyzer
+      - sortslice
+      - stdmethods
+      - stringintconv
+      - structtag
+      - testinggoroutine
+      - tests
+      - unmarshal
+      - unreachable
+      - unsafeptr
+      - unusedresult
+      - unusedwrite
+  tagliatelle:
+    case:
+      rules:
+        json: snake
+        yaml: snake
