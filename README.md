@@ -1,4 +1,6 @@
 # Heap structure, using go generics
+[![Go Report Card](https://goreportcard.com/badge/github.com/lispad/go-generics-tools)](https://goreportcard.com/report/github.com/lispad/go-generics-tools) 
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 Introduction
 ------------
@@ -9,7 +11,7 @@ generics. There are several heap implementations
 - generic Heap implementation, that could be used for `any` type,
 - `ComparableHeap` for [comparable](https://go.dev/ref/spec#Comparison_operators) types. Additional `Search`
   and `Delete` are implemented,
-- for [`constraints.Ordered`](https://pkg.go.dev/golang.org/x/exp/constraints#Ordered) there are syntax sugar
+- for [`constraints.Ordered`](https://pkg.go.dev/golang.org/x/exp/constraints#Ordered) there are
   constructors for min, max heaps;
 
 Also use-cases provided:
@@ -31,7 +33,7 @@ Usage Example
     import (
         "fmt"
 
-        "github.com/lispad/go-generics-heap/binheap"
+        "github.com/lispad/go-generics-tools/binheap"
     )
     
     func main() {
@@ -74,7 +76,7 @@ Installation
 
 To install package, run:
 
-    go get github.com/lispad/go-generics-heap/binheap
+    go get github.com/lispad/go-generics-tools/binheap
 
 License
 -------
