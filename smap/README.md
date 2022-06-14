@@ -27,7 +27,7 @@ Usage Example
     )
     
     func main() {
-    	m := NewIntegerComparable[int, int](8, 128)
+    	m := smap.NewIntegerComparable[int, int](8, 128)
         m.Store(123, 456)
 
         value, ok := m.Load(123)
