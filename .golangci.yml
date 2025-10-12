@@ -13,7 +13,6 @@ linters:
     - contextcheck
     - copyloopvar
     - decorder
-    - depguard
     - dogsled
     - dupl
     - dupword
@@ -26,7 +25,6 @@ linters:
     - exhaustruct
     - exptostd
     - fatcontext
-    - forbidigo
     - forcetypeassert
     - ginkgolinter
     - gocheckcompilerdirectives

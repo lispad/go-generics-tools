@@ -8,25 +8,30 @@ type GenericComparable[K comparable, V comparable] struct {
 
 // NewGenericComparable creates generic RWLocked Sharded map for comparable values.
 // shardDetector should be idempotent function.
-func NewGenericComparable[K comparable, V comparable](shardsCount, defaultSize int, shardDetector func(key K) int) GenericComparable[K, V] {
+func NewGenericComparable[K comparable, V comparable](
+	shardsCount int,
+	defaultSize int,
+	shardDetector func(key K) int,
+) GenericComparable[K, V] {
 	return GenericComparable[K, V]{
 		Generic: NewGeneric[K, V](shardsCount, defaultSize, shardDetector),
 	}
 }
 
 // CompareAndSwap executes the compare-and-swap operation for the Key & Value pair.
-// If and only if key exists, and value for key equals old, value will be changed to new.
+// If and only if key exists, and value for key equals old, value will be changed to actual.
 // Otherwise, returns current value.
-// The ok result indicates whether value was changed to new in the map.
-func (sm GenericComparable[K, V]) CompareAndSwap(key K, old, new V) (V, bool) {
+// The ok result indicates whether value was changed to actual in the map.
+func (sm GenericComparable[K, V]) CompareAndSwap(key K, old, actual V) (V, bool) {
 	shardID := sm.shardDetector(key)
 	sm.locks[shardID].Lock()
-	if current, ok := sm.shards[shardID][key]; ok && current == old {
-		sm.shards[shardID][key] = new
+	current, ok := sm.shards[shardID][key]
+	if ok && current == old {
+		sm.shards[shardID][key] = actual
 		sm.locks[shardID].Unlock()
-		return new, true
-	} else {
-		sm.locks[shardID].Unlock()
-		return current, false
+		return actual, true
 	}
+
+	sm.locks[shardID].Unlock()
+	return current, false
 }

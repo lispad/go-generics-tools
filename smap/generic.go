@@ -7,9 +7,9 @@ import (
 
 // Generic stores data in N shards, with rw mutex for each.
 type Generic[K comparable, V any] struct {
+	shardDetector func(key K) int
 	shards        []map[K]V
 	locks         []sync.RWMutex
-	shardDetector func(key K) int
 }
 
 // NewGeneric creates generic RWLocked Sharded map.
@@ -20,7 +20,7 @@ func NewGeneric[K comparable, V any](shardsCount, defaultSize int, shardDetector
 		locks:         make([]sync.RWMutex, shardsCount),
 		shardDetector: shardDetector,
 	}
-	for i := 0; i < shardsCount; i++ {
+	for i := range shardsCount {
 		sm.shards[i] = make(map[K]V, defaultSize)
 		sm.locks[i] = sync.RWMutex{}
 	}
@@ -147,7 +147,7 @@ func (sm Generic[K, V]) ShardID(key K) int {
 	return sm.shardDetector(key)
 }
 
-// Len returns number of elements
+// Len returns number of elements.
 func (sm Generic[K, V]) Len() int {
 	result := 0
 	for i := range sm.locks {

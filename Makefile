@@ -1,5 +1,5 @@
 test: fuzz
-	go test -cover github.com/lispad/go-generics-tools/binheap
+	go test -cover ./...
 
 fuzz:
 	go test -fuzz=FuzzEmptyMinHeap -fuzztime=10s github.com/lispad/go-generics-tools/binheap
@@ -8,4 +8,4 @@ fuzz:
 	go test -fuzz=FuzzTopNImmutable -fuzztime=10s github.com/lispad/go-generics-tools/binheap
 
 lint:
-	golangci-lint run binheap
+	golangci-lint run
