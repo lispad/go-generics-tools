@@ -61,9 +61,12 @@ could be much faster than sorting slice and getting top. E.g. For top-3 from 10k
 
 #### Benchmark
 
+```
 BenchmarkSortedMaxN-24      12423115            97.90 ns/op        0 B/op          0 allocs/op
-BenchmarkMaxNImmutable-24       560791629            2.043 ns/op           0 B/op          0 allocs/op
-BenchmarkMaxN-24        603099924            2.032 ns/op           0 B/op          0 allocs/op
+BenchmarkMaxNImmutable-24   560791629           2.043 ns/op        0 B/op          0 allocs/op
+BenchmarkMaxN-24            603099924           2.032 ns/op        0 B/op          0 allocs/op
+```
+
 Compatibility
 -------------
 Minimal Golang version is 1.24. Generics and fuzz testing are used.
