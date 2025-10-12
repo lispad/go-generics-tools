@@ -123,9 +123,40 @@ func (sm Generic[K, V]) Range(cb func(K, V) bool) {
 	}
 }
 
+// RangeKeys works similar like Range, but iterates by keys only.
+func (sm Generic[K, V]) RangeKeys(cb func(K) bool) {
+	keys := make([]K, 0)
+	for i := range sm.locks {
+		keys = keys[:0]
+		sm.locks[i].RLock()
+		for k := range sm.shards[i] {
+			keys = append(keys, k)
+		}
+		sm.locks[i].RUnlock()
+
+		for _, key := range keys {
+			if !cb(key) {
+				return
+			}
+		}
+	}
+}
+
 // ShardID returns shard number for given key.
 func (sm Generic[K, V]) ShardID(key K) int {
 	return sm.shardDetector(key)
+}
+
+// Len returns number of elements
+func (sm Generic[K, V]) Len() int {
+	result := 0
+	for i := range sm.locks {
+		sm.locks[i].RLock()
+		result += len(sm.shards[i])
+		sm.locks[i].RUnlock()
+	}
+
+	return result
 }
 
 // ShardsCount returns shards count, given on initialisation.

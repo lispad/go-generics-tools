@@ -1,11 +1,11 @@
 package binheap_test
 
 import (
+	"slices"
 	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"golang.org/x/exp/slices"
 
 	"github.com/lispad/go-generics-tools/binheap"
 )
@@ -15,9 +15,9 @@ func TestMaxNImmutable(t *testing.T) {
 	input := make([]string, len(source))
 	copy(input, source)
 
-	max := binheap.MaxNImmutable(input, 3)
+	top3 := binheap.MaxNImmutable(input, 3)
 	assert.Equal(t, source, input) // input should not be mutated
-	assert.Equal(t, []string{"zzz", "foo", "baz"}, max)
+	assert.Equal(t, []string{"zzz", "foo", "baz"}, top3)
 }
 
 func TestMinNImmutable(t *testing.T) {

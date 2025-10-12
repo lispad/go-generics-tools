@@ -1,11 +1,12 @@
 package binheap_test
 
 import (
+	"cmp"
+	"slices"
 	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"golang.org/x/exp/slices"
 
 	"github.com/lispad/go-generics-tools/binheap"
 )
@@ -88,7 +89,7 @@ func FuzzEmptyMaxHeap(f *testing.F) {
 }
 
 func TestEmptyComparableHeapHeap(t *testing.T) {
-	h := binheap.EmptyComparableHeap[string](func(a, b string) bool { return len(a) > len(b) })
+	h := binheap.EmptyComparableHeap[string](func(a, b string) int { return cmp.Compare(len(a), len(b)) })
 	assert.Equal(t, 0, h.Len())
 	assert.False(t, h.Search("333"))
 	assert.False(t, h.Delete("333"))

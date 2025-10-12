@@ -2,9 +2,8 @@ package binheap_test
 
 import (
 	"math/rand"
+	"slices"
 	"testing"
-
-	"golang.org/x/exp/slices"
 
 	"github.com/lispad/go-generics-tools/binheap"
 )

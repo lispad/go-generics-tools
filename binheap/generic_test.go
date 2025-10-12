@@ -1,6 +1,7 @@
 package binheap_test
 
 import (
+	"cmp"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,7 +10,7 @@ import (
 )
 
 func TestEmptyHeap(t *testing.T) {
-	h := binheap.EmptyHeap[string](func(a, b string) bool { return len(a) > len(b) })
+	h := binheap.EmptyHeap[string](func(a, b string) int { return cmp.Compare(len(a), len(b)) })
 	assert.Equal(t, 0, h.Len())
 	h.Push("1")
 	assert.Equal(t, 1, h.Len())

@@ -10,8 +10,7 @@ generics. There are several heap implementations
 - generic Heap implementation, that could be used for `any` type,
 - `ComparableHeap` for [comparable](https://go.dev/ref/spec#Comparison_operators) types. Additional `Search`
   and `Delete` are implemented,
-- for [`constraints.Ordered`](https://pkg.go.dev/golang.org/x/exp/constraints#Ordered) there are
-  constructors for min, max heaps;
+- for [`cmp.Ordered`] there are constructors for min, max heaps;
 
 Also use-cases provided:
 
@@ -62,13 +61,12 @@ could be much faster than sorting slice and getting top. E.g. For top-3 from 10k
 
 #### Benchmark
 
-    BenchmarkSortedMaxN-8      	10303648	   136.0 ns/op	   0 B/op	   0 allocs/op
-    BenchmarkMaxNImmutable-8   	398996316	   3.029 ns/op	   0 B/op	   0 allocs/op
-    BenchmarkMaxN-8            	804041455	   1.819 ns/op	   0 B/op	   0 allocs/op
-
+BenchmarkSortedMaxN-24      12423115            97.90 ns/op        0 B/op          0 allocs/op
+BenchmarkMaxNImmutable-24       560791629            2.043 ns/op           0 B/op          0 allocs/op
+BenchmarkMaxN-24        603099924            2.032 ns/op           0 B/op          0 allocs/op
 Compatibility
 -------------
-Minimal Golang version is 1.18. Generics and fuzz testing are used.
+Minimal Golang version is 1.24. Generics and fuzz testing are used.
 
 Installation
 ----------------------
