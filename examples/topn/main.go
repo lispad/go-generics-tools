@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cmp"
 	"fmt"
 
 	"github.com/lispad/go-generics-tools/binheap"
@@ -27,7 +28,7 @@ func main() {
 
 	someInt32Data := []int32{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0}
 	fmt.Printf("--- top 4 by remainder of devicion to 3 ---\n source slice: %v\n", someInt32Data)
-	topByDivisionTo3Remainder := binheap.TopN[int64](someIntData, 4, func(x, y int64) bool { return x%3 > y%3 })
+	topByDivisionTo3Remainder := binheap.TopN[int64](someIntData, 4, func(x, y int64) int { return cmp.Compare(x%3, y%3) })
 	fmt.Printf(" top 4 elements: %v\n", topByDivisionTo3Remainder)
 	fmt.Printf(" slice was mutated: %v\n\n", someIntData)
 }

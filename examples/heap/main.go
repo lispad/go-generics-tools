@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cmp"
 	"fmt"
 
 	"github.com/lispad/go-generics-tools/binheap"
@@ -11,7 +12,11 @@ type someStruct struct {
 }
 
 func main() {
-	heap := binheap.EmptyHeap[someStruct](func(x, y someStruct) bool { return len(x.someData) > len(y.someData) })
+	heap := binheap.EmptyHeap[someStruct](
+		func(x, y someStruct) int {
+			return cmp.Compare(len(x.someData), len(y.someData))
+		},
+	)
 	heap.Push(someStruct{someData: []int{1, 2, 3, 4, 5, 6}})
 	heap.Push(someStruct{someData: nil})
 	heap.Push(someStruct{someData: []int{1, 2, 3}})
