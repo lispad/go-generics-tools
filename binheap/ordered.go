@@ -1,7 +1,7 @@
 package binheap
 
 import (
-	"golang.org/x/exp/constraints"
+	"cmp"
 )
 
 // ComparableHeap provides additional Search and Delete methods.
@@ -11,7 +11,7 @@ type ComparableHeap[T comparable] struct {
 }
 
 // EmptyComparableHeap creates heap for comparable types.
-func EmptyComparableHeap[T comparable](comparator func(x, y T) bool) ComparableHeap[T] {
+func EmptyComparableHeap[T comparable](comparator CmpFunc[T]) ComparableHeap[T] {
 	return ComparableHeap[T]{
 		Heap: EmptyHeap(comparator),
 	}
@@ -19,7 +19,7 @@ func EmptyComparableHeap[T comparable](comparator func(x, y T) bool) ComparableH
 
 // ComparableFromSlice creates heap, based on provided slice.
 // Slice could be reordered.
-func ComparableFromSlice[T comparable](data []T, comparator func(x, y T) bool) ComparableHeap[T] {
+func ComparableFromSlice[T comparable](data []T, comparator CmpFunc[T]) ComparableHeap[T] {
 	return ComparableHeap[T]{
 		Heap: FromSlice(data, comparator),
 	}
@@ -49,35 +49,28 @@ func (h *ComparableHeap[T]) search(x T) int {
 			return i
 		}
 	}
+
 	return -1
 }
 
 // EmptyMinHeap creates empty Min-Heap for ordered types.
-func EmptyMinHeap[T constraints.Ordered]() ComparableHeap[T] {
-	return EmptyComparableHeap(func(x, y T) bool {
-		return x < y
-	})
+func EmptyMinHeap[T cmp.Ordered]() ComparableHeap[T] {
+	return EmptyComparableHeap(reverse(cmp.Compare[T]))
 }
 
 // EmptyMaxHeap creates empty Max-Heap for ordered types.
-func EmptyMaxHeap[T constraints.Ordered]() ComparableHeap[T] {
-	return EmptyComparableHeap(func(x, y T) bool {
-		return x > y
-	})
+func EmptyMaxHeap[T cmp.Ordered]() ComparableHeap[T] {
+	return EmptyComparableHeap(cmp.Compare[T])
 }
 
-// EmptyMinHeap creates Min-Heap, based on provided slice.
+// MinHeapFromSlice creates Min-Heap, based on provided slice.
 // Slice could be reordered.
-func MinHeapFromSlice[T constraints.Ordered](data []T) ComparableHeap[T] {
-	return ComparableFromSlice(data, func(x, y T) bool {
-		return x < y
-	})
+func MinHeapFromSlice[T cmp.Ordered](data []T) ComparableHeap[T] {
+	return ComparableFromSlice(data, reverse(cmp.Compare[T]))
 }
 
-// EmptyMaxHeap creates Max-Heap, based on provided slice.
+// MaxHeapFromSlice creates Max-Heap, based on provided slice.
 // Slice could be reordered.
-func MaxHeapFromSlice[T constraints.Ordered](data []T) ComparableHeap[T] {
-	return ComparableFromSlice(data, func(x, y T) bool {
-		return x > y
-	})
+func MaxHeapFromSlice[T cmp.Ordered](data []T) ComparableHeap[T] {
+	return ComparableFromSlice(data, cmp.Compare[T])
 }

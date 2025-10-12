@@ -101,3 +101,20 @@ func TestGenericComparable_CompareAndSwap(t *testing.T) {
 	assert.True(t, ok)
 	assert.Equal(t, 23, val)
 }
+
+func TestGeneric_NegativeKey(t *testing.T) {
+	m := NewInteger[int, int](8, 128)
+	expected := make(map[int]int, 256)
+	for i := 0; i > -256; i-- {
+		m.Store(i, i*i)
+		expected[i] = i * i
+	}
+
+	result := make(map[int]int, 256)
+	m.Range(func(k int, v int) bool {
+		result[k] = v
+		return true
+	})
+
+	assert.Equal(t, expected, result)
+}

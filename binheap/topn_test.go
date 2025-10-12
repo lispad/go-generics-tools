@@ -1,10 +1,10 @@
 package binheap_test
 
 import (
+	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"golang.org/x/exp/slices"
 
 	"github.com/lispad/go-generics-tools/binheap"
 )

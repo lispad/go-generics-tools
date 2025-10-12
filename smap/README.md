@@ -64,9 +64,11 @@ Sharded Lock map is approximately equal to sync.Map on 50% read + 50% concurrent
 5% writes+95% reads, and 1% writes+99% reads. 
 Also sharded map allocated about 40x less memory in 5% writes+95% reads scenario, than sync.Map does.
 
+Retest with golang 1.25 on more recent hardware (AMD Ryzen AI 365 + Ubuntu 25.10 + Linux 6.17) shows the same ratio.
+
 Compatibility
 -------------
-Minimal Golang version is 1.18. Generics are used.
+Minimal Golang version is 1.24
 
 Installation
 ----------------------

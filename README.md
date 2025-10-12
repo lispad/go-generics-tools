@@ -17,7 +17,7 @@ and uses less memory, doing less allocations.
 
 Compatibility
 -------------
-Minimal Golang version is 1.18. Generics and fuzz testing are used.
+Minimal Golang version is 1.24. Generics and fuzz testing are used.
 
 Installation
 ----------------------

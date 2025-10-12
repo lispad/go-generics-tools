@@ -2,22 +2,26 @@
 // with use of golang generics, and top-N heap usecases.
 package binheap
 
+// CmpFunc represents compare func from slices library.
+type CmpFunc[T any] func(a, b T) int
+
 // Heap provides basic methods: Push, Peak, Pop, Replace top element and PushPop.
 type Heap[T any] struct {
-	comparator func(x, y T) bool
+	comparator CmpFunc[T]
 	data       []T
 }
 
 // EmptyHeap creates empty heap with provided comparator.
-func EmptyHeap[T any](comparator func(x, y T) bool) Heap[T] {
+func EmptyHeap[T any](comparator CmpFunc[T]) Heap[T] {
 	return Heap[T]{
 		comparator: comparator,
+		data:       []T{},
 	}
 }
 
 // FromSlice creates heap, based on provided slice.
 // Slice could be reordered.
-func FromSlice[T any](data []T, comparator func(x, y T) bool) Heap[T] {
+func FromSlice[T any](data []T, comparator CmpFunc[T]) Heap[T] {
 	h := Heap[T]{
 		data:       data,
 		comparator: comparator,
@@ -59,7 +63,7 @@ func (h *Heap[T]) Pop() T {
 
 // PushPop pushes x to the heap and then pops top element.
 func (h *Heap[T]) PushPop(x T) T {
-	if h.Len() > 0 && h.comparator(h.data[0], x) {
+	if h.Len() > 0 && h.comparator(h.data[0], x) == 1 {
 		x, h.data[0] = h.data[0], x
 		h.down(0, h.Len())
 	}
@@ -68,18 +72,18 @@ func (h *Heap[T]) PushPop(x T) T {
 }
 
 // Replace extracts the root of the heap, and push a new item.
-func (h *Heap[T]) Replace(x T) (result T) {
+func (h *Heap[T]) Replace(x T) T {
+	var result T
 	result, h.data[0] = h.data[0], x
 	h.fix(0)
-	return
+
+	return result
 }
 
-func (h *Heap[T]) fix(i int) (result T) {
+func (h *Heap[T]) fix(i int) {
 	if !h.down(i, h.Len()) {
 		h.up(i)
 	}
-
-	return result
 }
 
 func (h *Heap[T]) swap(i, j int) {
@@ -89,7 +93,7 @@ func (h *Heap[T]) swap(i, j int) {
 func (h *Heap[T]) up(j int) {
 	for {
 		i := (j - 1) / 2 // parent
-		if i == j || !h.comparator(h.data[j], h.data[i]) {
+		if i == j || h.comparator(h.data[j], h.data[i]) == -1 {
 			break
 		}
 		h.swap(i, j)
@@ -105,10 +109,10 @@ func (h *Heap[T]) down(i0, n int) bool {
 			break
 		}
 		j := j1 // left child
-		if j2 := j1 + 1; j2 < n && h.comparator(h.data[j2], h.data[j1]) {
+		if j2 := j1 + 1; j2 < n && h.comparator(h.data[j2], h.data[j1]) == 1 {
 			j = j2 // = 2*i + 2  // right child
 		}
-		if !h.comparator(h.data[j], h.data[i]) {
+		if h.comparator(h.data[j], h.data[i]) == -1 {
 			break
 		}
 		h.swap(i, j)
